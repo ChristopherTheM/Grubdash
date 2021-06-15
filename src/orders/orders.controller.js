@@ -1,3 +1,4 @@
+//imports required
 const path = require("path");
 
 // Use the existing order data
@@ -8,6 +9,7 @@ const nextId = require("../utils/nextId");
 
 // TODO: Implement the /orders handlers needed to make the tests pass
 
+//function to create and add a new order to the database
 function create(req, res, next) {
   const { data: order = {} } = req.body;
 
@@ -29,6 +31,7 @@ function read(req, res, next) {
   res.json({ data: order });
 }
 
+//function to update/modify an existing order
 function update(req, res, next) {
   const { data: order = {} } = req.body;
   const existingOrder = res.locals.order;
@@ -44,6 +47,7 @@ function update(req, res, next) {
   res.json({ data: updatedOrder });
 }
 
+//function to delete an order from the database
 function destroy(req, res, next) {
   const orderToDelete = res.locals.order;
 
@@ -53,10 +57,12 @@ function destroy(req, res, next) {
   res.sendStatus(204);
 }
 
+//function to list all orders
 function list(req, res) {
   res.json({ data: orders });
 }
 
+//function to let the user know that the order is pending
 function orderIsPending(req, res, next) {
   const order = res.locals.order;
 
@@ -69,6 +75,7 @@ function orderIsPending(req, res, next) {
   });
 }
 
+//checking whether a new order has valid content
 function newOrderIsValid(req, res, next) {
   const { data: order = {} } = req.body;
 
@@ -94,6 +101,7 @@ function newOrderIsValid(req, res, next) {
   return next();
 }
 
+//checking if the dishes on the order are valid
 function orderDishesIsValid(req, res, next) {
   const { data: order = {} } = req.body;
   const dishes = order.dishes;
@@ -115,6 +123,7 @@ function orderDishesIsValid(req, res, next) {
   return next();
 }
 
+//checking whether a current order exists or not
 function orderExists(req, res, next) {
   const orderId = req.params.orderId;
   const { data: order = {} } = req.body;
@@ -128,6 +137,7 @@ function orderExists(req, res, next) {
   next({ status: 404, message: `Order id does not exist: ${orderId}` });
 }
 
+//checking the order status and if it's valid
 function orderStatusIsValid(req, res, next) {
   const { data: order } = req.body;
   const existingOrder = res.locals.order;
@@ -146,6 +156,7 @@ function orderStatusIsValid(req, res, next) {
   return next();
 }
 
+//checking whether the order matches the correct route given by the user
 function bodyIdPropertyMatchesRouteId(req, res, next) {
   const orderId = req.params.orderId;
   const { data: order = {} } = req.body;
@@ -158,6 +169,7 @@ function bodyIdPropertyMatchesRouteId(req, res, next) {
   });
 }
 
+//exporting each function to be used in other files
 module.exports = {
   list,
   create: [newOrderIsValid, orderDishesIsValid, create],
