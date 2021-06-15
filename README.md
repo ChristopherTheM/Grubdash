@@ -3,6 +3,6 @@ Grubdash is an online platform that allows you to add all sorts of different mea
 
 This file constructed the back-end of the application so that you can reference a database with a variety of dishes and add them to orders.
 
-There are two controllers and routers, a dishes controller/router and orders controller/router that differentiate between url endpoints so that specific dishes can be called for different orders.
+There are two controllers and routers, a dishes controller/router and orders controller/router that differentiate between url endpoints so that specific dishes can be called for different orders.  Each controller holds the functions for the different CRUD operations that are called, and each router allows the operation to be used at the correct URL endpoint.
 
 The error handlers return the correct code of the error in case the user gets the wrong endpoint or one of the functions does not end up working correctly or if something arbitrary goes wrong.
