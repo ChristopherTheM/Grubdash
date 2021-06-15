@@ -8,10 +8,12 @@ const nextId = require("../utils/nextId");
 
 // TODO: Implement the /dishes handlers needed to make the tests pass
 
+// function to list all dishes at /dishes
 function list(req, res) {
   res.json({ data: dishes });
 }
 
+//function used to create or add a new dish to the database
 function create(req, res, next) {
   const { data: dish = {} } = req.body;
 
@@ -28,12 +30,14 @@ function create(req, res, next) {
   res.status(201).json({ data: newDish });
 }
 
+//function to query the database with dish information
 function read(req, res, next) {
   const dish = res.locals.dish;
 
   res.json({ data: dish });
 }
 
+//function to modify an existing dish
 function update(req, res, next) {
   const dishId = req.params.dishId;
   const existingDish = res.locals.dish;
@@ -48,6 +52,7 @@ function update(req, res, next) {
   res.json({ data: dish });
 }
 
+//function to check whether a dish already exists or not
 function dishExists(req, res, next) {
   const dishId = req.params.dishId;
   const foundDish = dishes.find((dish) => dish.id === dishId);
@@ -59,6 +64,7 @@ function dishExists(req, res, next) {
   next({ status: 404, message: `Dish does not exist: ${dishId}` });
 }
 
+//function to check whether the dish that is being added has the correct format and information required
 function bodyIsValid(req, res, next) {
   const { data: dish = {} } = req.body;
   if (dish.name === undefined || !dish.name) {
@@ -83,6 +89,7 @@ function bodyIsValid(req, res, next) {
   next();
 }
 
+//function checking whether the price of a dish is a number and not any other data type
 function priceIsANumber(req, res, next) {
   const { data: dish = {} } = req.body;
   if (typeof dish.price == "number") {
@@ -94,6 +101,7 @@ function priceIsANumber(req, res, next) {
   });
 }
 
+//function to check that the ID for the body matches the ID of the route being queried
 function bodyIdMatchesRouteId(req, res, next) {
   const { data: dish = {} } = req.body;
 
@@ -109,6 +117,7 @@ function bodyIdMatchesRouteId(req, res, next) {
   return next();
 }
 
+//list of exports of functions that can be called and used in other files
 module.exports = {
   list,
   create: [bodyIsValid, create],
